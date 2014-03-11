@@ -32,7 +32,7 @@
 
 		_create: function() {
 			this.element.data('sortable', this.element.data('nestedSortable'));
-			var listClass = this.element.find(this.options.listClass)
+			var listClass = this.element.find("."+this.options.listClass)
 			if(listClass.length){
 				this.options.listType = listClass.prop("tagName").toLowerCase();
 			}
