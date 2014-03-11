@@ -150,7 +150,7 @@
 			var previousItem = this.placeholder[0].previousSibling ? $(this.placeholder[0].previousSibling) : null;
 			if (previousItem != null) {
 				///previousItem[0].nodeName.toLowerCase() != 'li'
-				while (previousItem.hasClass(this.options.items) || previousItem[0] == this.currentItem[0] || previousItem[0] == this.helper[0]) {
+				while (!previousItem.hasClass(this.options.items) || previousItem[0] == this.currentItem[0] || previousItem[0] == this.helper[0]) {
 					if (previousItem[0].previousSibling) {
 						previousItem = $(previousItem[0].previousSibling);
 					} else {
@@ -163,7 +163,7 @@
       // To find the next sibling in the list, keep stepping forward until we hit a valid list item.
       var nextItem = this.placeholder[0].nextSibling ? $(this.placeholder[0].nextSibling) : null;
       if (nextItem != null) {
-        while (nextItem.hasClass(this.options.items) || nextItem[0] == this.currentItem[0] || nextItem[0] == this.helper[0]) {
+        while (!nextItem.hasClass(this.options.items) || nextItem[0] == this.currentItem[0] || nextItem[0] == this.helper[0]) {
           if (nextItem[0].nextSibling) {
             nextItem = $(nextItem[0].nextSibling);
           } else {
