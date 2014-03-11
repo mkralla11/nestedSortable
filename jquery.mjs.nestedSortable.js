@@ -191,16 +191,16 @@
 						(o.rtl && (this.positionAbs.left + this.helper.outerWidth() < previousItem.offset().left + previousItem.outerWidth() - o.tabSize) ||
 						!o.rtl && (this.positionAbs.left > previousItem.offset().left + o.tabSize))) {
 				this._isAllowed(previousItem, level, level+childLevels+1);
-				if (!previousItem.children(o.listClass).length) {
+				if (!previousItem.children("."+o.listClass).length) {
 					previousItem[0].appendChild(newList);
 				}
         // If this item is being moved from the top, add it to the top of the list.
         if (previousTopOffset && (previousTopOffset <= previousItem.offset().top)) {
-          previousItem.children(o.listClass).prepend(this.placeholder);
+          previousItem.children("."+o.listClass).prepend(this.placeholder);
         }
         // Otherwise, add it to the bottom of the list.
         else {
-				  previousItem.children(o.listClass)[0].appendChild(this.placeholder[0]);
+				  previousItem.children("."+o.listClass)[0].appendChild(this.placeholder[0]);
         }
 				this._trigger("change", event, this._uiHash());
 			}
@@ -258,7 +258,7 @@
 			$(items).each(function() {
 				var res = ($(o.item || this).attr(o.attribute || 'id') || '')
 						.match(o.expression || (/(.+)[-=_](.+)/)),
-				    pid = ($(o.item || this).parent(o.listClass)
+				    pid = ($(o.item || this).parent("."+o.listClass)
 						.parent(o.items)
 						.attr(o.attribute || 'id') || '')
 						.match(o.expression || (/(.+)[-=_](.+)/));
@@ -295,9 +295,9 @@
 				var id = ($(item).attr(o.attribute || 'id') || '').match(o.expression || (/(.+)[-=_](.+)/));
 				if (id) {
 					var currentItem = {"id" : id[2]};
-					if ($(item).children(o.listClass).children(o.items).length > 0) {
+					if ($(item).children("."+o.listClass).children(o.items).length > 0) {
 						currentItem.children = [];
-						$(item).children(o.listClass).children(o.items).each(function() {
+						$(item).children("."+o.listClass).children(o.items).each(function() {
 							var level = _recursiveItems(this);
 							currentItem.children.push(level);
 						});
@@ -336,9 +336,9 @@
 				    id,
 				    pid;
 
-				if ($(item).children(o.listClass).children(o.items).length > 0) {
+				if ($(item).children("."+o.listClass).children(o.items).length > 0) {
 					depth ++;
-					$(item).children(o.listClass).children(o.items).each(function () {
+					$(item).children("."+o.listClass).children(o.items).each(function () {
 						right = _recursiveArray($(this), depth, right);
 					});
 					depth --;
@@ -349,7 +349,7 @@
 				if (depth === sDepth + 1) {
 					pid = o.rootID;
 				} else {
-					var parentItem = ($(item).parent(o.listClass)
+					var parentItem = ($(item).parent("."+o.listClass)
 											 .parent(o.items)
 											 .attr(o.attribute || 'id'))
 											 .match(o.expression || (/(.+)[-=_](.+)/));
@@ -368,7 +368,7 @@
 
 		_clearEmpty: function(item) {
 
-			var emptyList = $(item).children(this.options.listClass);
+			var emptyList = $(item).children("."+this.options.listClass);
 			if (emptyList.length && !emptyList.children().length && !this.options.doNotClear) {
 				emptyList.remove();
 			}
@@ -379,12 +379,12 @@
 
 			var level = 1;
 
-			if (this.options.listClass) {
-				var list = item.closest(this.options.listClass);
+			if ("."+this.options.listClass) {
+				var list = item.closest("."+this.options.listClass);
 				while (list && list.length > 0 && 
                     	!list.is('.ui-sortable')) {
 					level++;
-					list = list.parent().closest(this.options.listClass);
+					list = list.parent().closest("."+this.options.listClass);
 				}
 			}
 
@@ -397,7 +397,7 @@
 			    result = 0;
 			depth = depth || 0;
 
-			$(parent).children(o.listClass).children(o.items).each(function (index, child) {
+			$(parent).children("."+o.listClass).children(o.items).each(function (index, child) {
 					result = Math.max(self._getChildLevels(child, depth + 1), result);
 			});
 
