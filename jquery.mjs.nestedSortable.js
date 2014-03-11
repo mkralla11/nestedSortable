@@ -21,7 +21,7 @@
 			errorClass: 'mjs-nestedSortable-error',
 			doNotClear: false,
 			//listType: 'ol',
-			listClass: ".ns-inner-list",
+			listClass: ".list",
 			maxLevels: 0,
 			protectRoot: false,
 			rootID: null,
