@@ -31,8 +31,8 @@
 		_create: function() {
 			this.element.data('sortable', this.element.data('nestedSortable'));
 
-			if (!this.element.hasClass(this.options.listType))
-				throw new Error('nestedSortable: Please check the listType option is set to your actual list type');
+			//if (!this.element.hasClass(this.options.listType))
+			//	throw new Error('nestedSortable: Please check the listType option is set to your actual list type');
 
 			return $.ui.sortable.prototype._create.apply(this, arguments);
 		},
