@@ -20,7 +20,8 @@
 			disableNesting: 'mjs-nestedSortable-no-nesting',
 			errorClass: 'mjs-nestedSortable-error',
 			doNotClear: false,
-			listType: 'ol',
+			//listType: 'ol',
+			listClass: ".ns-inner-list",
 			maxLevels: 0,
 			protectRoot: false,
 			rootID: null,
@@ -30,7 +31,13 @@
 
 		_create: function() {
 			this.element.data('sortable', this.element.data('nestedSortable'));
-
+			var listClass = this.element.find(this.options.listClass)
+			if(listClass.length){
+				this.options.listType = listClass.prop("tagName").toLowerCase();
+			}
+			else{
+				throw new Error('nestedSortable: The listClass was not specified.');		
+			}
 			//if (!this.element.hasClass(this.options.listType))
 			//	throw new Error('nestedSortable: Please check the listType option is set to your actual list type');
 
@@ -166,7 +173,7 @@
       }
 
 			var newList = document.createElement(o.listType);
-
+			newList.className = o.listClass;
 			this.beyondMaxLevels = 0;
 			
 			// If the item is moved to the left, send it to its parent's level unless there are siblings below it.
@@ -182,16 +189,16 @@
 						(o.rtl && (this.positionAbs.left + this.helper.outerWidth() < previousItem.offset().left + previousItem.outerWidth() - o.tabSize) ||
 						!o.rtl && (this.positionAbs.left > previousItem.offset().left + o.tabSize))) {
 				this._isAllowed(previousItem, level, level+childLevels+1);
-				if (!previousItem.children(o.listType).length) {
+				if (!previousItem.children(o.listClass).length) {
 					previousItem[0].appendChild(newList);
 				}
         // If this item is being moved from the top, add it to the top of the list.
         if (previousTopOffset && (previousTopOffset <= previousItem.offset().top)) {
-          previousItem.children(o.listType).prepend(this.placeholder);
+          previousItem.children(o.listClass).prepend(this.placeholder);
         }
         // Otherwise, add it to the bottom of the list.
         else {
-				  previousItem.children(o.listType)[0].appendChild(this.placeholder[0]);
+				  previousItem.children(o.listClass)[0].appendChild(this.placeholder[0]);
         }
 				this._trigger("change", event, this._uiHash());
 			}
@@ -249,7 +256,7 @@
 			$(items).each(function() {
 				var res = ($(o.item || this).attr(o.attribute || 'id') || '')
 						.match(o.expression || (/(.+)[-=_](.+)/)),
-				    pid = ($(o.item || this).parent(o.listType)
+				    pid = ($(o.item || this).parent(o.listClass)
 						.parent(o.items)
 						.attr(o.attribute || 'id') || '')
 						.match(o.expression || (/(.+)[-=_](.+)/));
@@ -286,9 +293,9 @@
 				var id = ($(item).attr(o.attribute || 'id') || '').match(o.expression || (/(.+)[-=_](.+)/));
 				if (id) {
 					var currentItem = {"id" : id[2]};
-					if ($(item).children(o.listType).children(o.items).length > 0) {
+					if ($(item).children(o.listClass).children(o.items).length > 0) {
 						currentItem.children = [];
-						$(item).children(o.listType).children(o.items).each(function() {
+						$(item).children(o.listClass).children(o.items).each(function() {
 							var level = _recursiveItems(this);
 							currentItem.children.push(level);
 						});
@@ -327,9 +334,9 @@
 				    id,
 				    pid;
 
-				if ($(item).children(o.listType).children(o.items).length > 0) {
+				if ($(item).children(o.listClass).children(o.items).length > 0) {
 					depth ++;
-					$(item).children(o.listType).children(o.items).each(function () {
+					$(item).children(o.listClass).children(o.items).each(function () {
 						right = _recursiveArray($(this), depth, right);
 					});
 					depth --;
@@ -340,7 +347,7 @@
 				if (depth === sDepth + 1) {
 					pid = o.rootID;
 				} else {
-					var parentItem = ($(item).parent(o.listType)
+					var parentItem = ($(item).parent(o.listClass)
 											 .parent(o.items)
 											 .attr(o.attribute || 'id'))
 											 .match(o.expression || (/(.+)[-=_](.+)/));
@@ -359,7 +366,7 @@
 
 		_clearEmpty: function(item) {
 
-			var emptyList = $(item).children(this.options.listType);
+			var emptyList = $(item).children(this.options.listClass);
 			if (emptyList.length && !emptyList.children().length && !this.options.doNotClear) {
 				emptyList.remove();
 			}
@@ -370,12 +377,12 @@
 
 			var level = 1;
 
-			if (this.options.listType) {
-				var list = item.closest(this.options.listType);
+			if (this.options.listClass) {
+				var list = item.closest(this.options.listClass);
 				while (list && list.length > 0 && 
                     	!list.is('.ui-sortable')) {
 					level++;
-					list = list.parent().closest(this.options.listType);
+					list = list.parent().closest(this.options.listClass);
 				}
 			}
 
@@ -388,7 +395,7 @@
 			    result = 0;
 			depth = depth || 0;
 
-			$(parent).children(o.listType).children(o.items).each(function (index, child) {
+			$(parent).children(o.listClass).children(o.items).each(function (index, child) {
 					result = Math.max(self._getChildLevels(child, depth + 1), result);
 			});
 
